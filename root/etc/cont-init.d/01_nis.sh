@@ -2,13 +2,13 @@
 
 set -e
 
-# User params
 DEFAULTDOMAIN=${DEFAULTDOMAIN:=""}
 NISSERVERS=${NISSERVERS:=""}
 
 if [ ! -z "$DEFAULTDOMAIN" ] && [ ! -z "$NISSERVERS" ]; then
-    echo "Setting /etc/defaultdomain to '${DEFAULTDOMAIN}'"
-    echo "Using NIS server: '${NISSERVERS}'"
+    echo "Setting up NIS/YP"
+    echo "defaultdomain: '${DEFAULTDOMAIN}'"
+    echo "NIS server: '${NISSERVERS}'"
 
     echo ${DEFAULTDOMAIN} > /etc/defaultdomain
     echo "domain ${DEFAULTDOMAIN} server ${NISSERVERS}" > /etc/yp.conf
@@ -39,9 +39,8 @@ EOT
     chmod +x /etc/services.d/rpcbind/run
     mkdir -p /etc/services.d/nis/
     cat <<EOT > /etc/services.d/nis/run
-#!/usr/bin/execlineb -P
-
-/usr/sbin/ypbind
+#!/usr/bin/env bash
+exec /usr/sbin/ypbind -n
 EOT
     chmod +x /etc/services.d/nis/run
 else

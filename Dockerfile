@@ -3,16 +3,22 @@ LABEL   maintainer="QED"
 
 ARG     BUILD_DATE
 ARG     VCS_REF
-ARG     BUILD_VERSION=0.1.0
+ARG     BUILD_VERSION
 
 ## s6 overlay
 ARG     S6_OVERLAY_VERSION="v1.22.1.0"
 ARG     S6_OVERLAY_ARCH="amd64"
 
+ENV     \
+        ## NIS
+        DEFAULTDOMAIN \
+        NISSERVERS \
+        TZ="UTC" \
 
-ENV     DEFAULTDOMAIN="" \
-        NISSERVERS="" \
-        TZ="UTC"
+        ## Postfix
+        MAILNAME \
+        RELAYHOST \
+        MYDESTINATION
 
 
 LABEL   org.label-schema.schema-version="1.0" \
@@ -27,18 +33,20 @@ LABEL   org.label-schema.schema-version="1.0" \
 
 
 ## Install packages
-RUN     \        
+RUN     \
         echo "**** Install packages ****" && \
         apt-get update && \
         DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y \
-        acl apt-transport-https autofs \
+        acl apt-utils apt-transport-https autofs \
         bc build-essential \
-        curl \
+        ca-certificates curl \
         dnsutils \
         emacs \
         gnupg gnumeric \
+        libsasl2-modules \
+        mailutils \
         net-tools nfs-common nis \
-        p7zip p7zip-full perl procps \
+        p7zip p7zip-full perl postfix procps \
         rpcbind \
         socat ssh sudo sysstat \
         timelimit tmux \
@@ -48,8 +56,11 @@ RUN     \
         xterm xxdiff \
         zip && \
         echo "**** Clean up packages ****" && \
-        apt-get clean && \
-        rm -rf /var/lib/apt/lists/*
+        apt-get autoremove -y && apt-get autoclean && apt-get clean && \
+        rm -rf \
+       	/tmp/* \
+       	/var/lib/apt/lists/* \
+       	/var/tmp/*
 
 
 ## root filesystem
@@ -63,6 +74,8 @@ RUN     \
         rm /tmp/s6-overlay.tar.gz
 
 RUN     echo "**** Done ****"
+
+VOLUME  [ "/etc/auto.master.d" ]
 
 ## init
 ENTRYPOINT [ "/init" ]
