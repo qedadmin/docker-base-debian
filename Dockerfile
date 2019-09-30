@@ -14,7 +14,7 @@ ENV     \
         DEFAULTDOMAIN \
         NISSERVERS \
         TZ="UTC" \
-
+        \
         ## Postfix
         MAILNAME \
         RELAYHOST \
@@ -43,7 +43,7 @@ RUN     \
         dnsutils \
         emacs \
         gnupg gnumeric \
-        libsasl2-modules \
+        ldap-utils libnss-ldap libpam-ldap libsasl2-modules \
         mailutils \
         net-tools nfs-common nis \
         p7zip p7zip-full perl postfix procps \
@@ -75,7 +75,7 @@ RUN     \
 
 RUN     echo "**** Done ****"
 
-VOLUME  [ "/etc/auto.master.d" ]
+VOLUME  [ "/etc/auto.master.d", "/etc/ldap", "/etc/pam.d" ]
 
 ## init
 ENTRYPOINT [ "/init" ]
