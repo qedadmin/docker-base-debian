@@ -59,6 +59,10 @@ RUN     \
         apt-get autoremove -y && apt-get autoclean && apt-get clean && \
         rm -rf \
        	/tmp/* \
+        /usr/share/man/* \
+        /usr/share/doc/* \
+        /var/cache/* \
+        /var/log/* \
        	/var/lib/apt/lists/* \
        	/var/tmp/*
 
