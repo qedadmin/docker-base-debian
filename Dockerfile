@@ -49,7 +49,7 @@ RUN     \
         p7zip p7zip-full perl postfix procps \
         rpcbind \
         socat ssh sudo sysstat \
-        timelimit tmux \
+        tcsh timelimit tmux \
         unzip \
         vim \
         wget \
