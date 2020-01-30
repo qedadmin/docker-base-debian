@@ -47,7 +47,7 @@ RUN     \
         mailutils \
         net-tools nfs-common nis \
         p7zip p7zip-full perl postfix procps \
-        rpcbind \
+        rpcbind rsync \
         socat ssh sudo sysstat \
         tcsh timelimit tmux \
         unzip \
