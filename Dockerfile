@@ -43,6 +43,7 @@ RUN     \
         dnsutils \
         emacs \
         gnupg gnumeric \
+        iputils-ping \
         ldap-utils libnss-ldap libpam-ldap libsasl2-modules \
         mailutils \
         net-tools nfs-common nis \
