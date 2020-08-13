@@ -1,6 +1,3 @@
-ARG     HAPROXY_TAG=2.2
-FROM    haproxy:${HAPROXY_TAG} AS build_haproxy
-
 FROM    debian:buster-slim
 LABEL   maintainer="QED"
 
@@ -70,9 +67,6 @@ RUN     \
         /var/log/* \
        	/var/lib/apt/lists/* \
        	/var/tmp/*
-
-COPY    --from=build_haproxy /usr/local/sbin/haproxy /usr/sbin/
-COPY    --from=build_haproxy /usr/src/haproxy/examples/errorfiles /etc/haproxy/errors
 
 ## root filesystem
 COPY    root /
