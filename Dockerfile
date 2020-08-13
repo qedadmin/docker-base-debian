@@ -59,7 +59,7 @@ RUN     \
         wget \
         xterm xxdiff \
         zip && \
-        mkdir -p /etc/haproxy \ &&
+        mkdir -p /etc/haproxy && \
         echo "**** Clean up packages ****" && \
         apt-get autoremove -y && apt-get autoclean && apt-get clean && \
         rm -rf \
