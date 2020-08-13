@@ -1,3 +1,6 @@
+ARG     HAPROXY_TAG=2.2
+FROM    haproxy:${HAPROXY_TAG} AS build_haproxy
+
 FROM    debian:buster-slim
 LABEL   maintainer="QED"
 
@@ -6,7 +9,7 @@ ARG     VCS_REF
 ARG     BUILD_VERSION
 
 ## s6 overlay
-ARG     S6_OVERLAY_VERSION="v1.22.1.0"
+ARG     S6_OVERLAY_VERSION="v2.0.0.1"
 ARG     S6_OVERLAY_ARCH="amd64"
 
 ENV     \
@@ -56,6 +59,7 @@ RUN     \
         wget \
         xterm xxdiff \
         zip && \
+        mkdir -p /etc/haproxy \ &&
         echo "**** Clean up packages ****" && \
         apt-get autoremove -y && apt-get autoclean && apt-get clean && \
         rm -rf \
@@ -67,6 +71,8 @@ RUN     \
        	/var/lib/apt/lists/* \
        	/var/tmp/*
 
+COPY    --from=build_haproxy /usr/local/sbin/haproxy /usr/sbin/
+COPY    --from=build_haproxy /usr/src/haproxy/examples/errorfiles /etc/haproxy/errors
 
 ## root filesystem
 COPY    root /
